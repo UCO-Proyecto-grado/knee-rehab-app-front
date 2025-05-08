@@ -6,7 +6,7 @@ import { User, Mail, Phone, Bell, Shield, LogOut } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 const ProfilePage = () => {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('personal');
   
   const tabs = [

@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 const ProgressPage = () => {
   const [selectedPeriod, setSelectedPeriod] = useState('semana');
-  const [currentWeek, setCurrentWeek] = useState('Mayo 1-7, 2025');
+  const [currentWeek, _setCurrentWeek] = useState('Mayo 1-7, 2025');
 
   // Mock data for charts
   const weeklyData = [65, 68, 70, 72, 75, 73, 78];

@@ -6,7 +6,7 @@ import Button from '../components/Button';
 
 const DashboardPage = () => {
   const { user } = useAuth();
-  const [currentDay, setCurrentDay] = useState(3); // Example: day 3 of program
+  const [currentDay, _setCurrentDay] = useState(3); // Example: day 3 of program
 
   const todaysExercises = [
     {
