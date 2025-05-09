@@ -86,14 +86,23 @@ const LoginPage = () => {
               {isLoading ? 'Cargando...' : 'Iniciar sesión'}
             </Button>
             
-            <div className="mt-4 text-center">
+            <div className="mt-4 text-center space-y-2">
               <p>
-                No tienes una cuenta?{' '}
+                ¿No tienes una cuenta?{' '}
                 <Link 
                   to="/registro" 
                   className="text-typography-primary hover:text-functional-blue-light transition duration-200"
                 >
                   Regístrate
+                </Link>
+              </p>
+              <p>
+                ¿Eres un centro de rehabilitación?{' '}
+                <Link 
+                  to="/registro-centro" 
+                  className="text-typography-primary hover:text-functional-blue-light transition duration-200"
+                >
+                  Registra tu centro
                 </Link>
               </p>
             </div>
