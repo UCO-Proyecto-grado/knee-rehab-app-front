@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-import { lazy, Suspense, useEffect } from 'react';
+import { useEffect } from 'react';
 import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider } from './context/AuthContext';
 import { getTiposDocumento } from './services/entidades_primarias_service';
@@ -25,7 +25,6 @@ function App() {
 
   return (
     <AuthProvider>
-      <Suspense fallback={<div>Cargando...</div>}></Suspense>
       <div className="min-h-screen bg-background text-typography-secondary font-sans">
         <Routes>
           <Route path="/" element={<LoginPage />} />

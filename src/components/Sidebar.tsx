@@ -5,7 +5,6 @@ import {
   BarChart2, 
   Video, 
   User, 
-  Calendar, 
   FileText,
   LogOut
 } from 'lucide-react';
