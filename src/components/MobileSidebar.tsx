@@ -71,7 +71,7 @@ const MobileSidebar: React.FC<MobileSidebarProps> = ({ isOpen, onClose }) => {
         <div className="flex items-center justify-between h-16 px-4 border-b border-background">
           <div className="flex items-center space-x-2">
             <Activity className="h-6 w-6 text-typography-primary" />
-            <span className="text-lg font-semibold text-typography-primary">KneeRehab</span>
+            <span className="text-lg font-semibold text-typography-primary">Knee Rehab</span>
           </div>
           <button
             onClick={onClose}

@@ -34,11 +34,6 @@ const Sidebar = () => {
       path: '/progreso' 
     },
     { 
-      icon: <Calendar size={20} />, 
-      label: 'Citas', 
-      path: '/citas' 
-    },
-    { 
       icon: <FileText size={20} />, 
       label: 'Recursos', 
       path: '/recursos' 
@@ -55,7 +50,7 @@ const Sidebar = () => {
       <div className="flex items-center justify-center h-16 border-b border-background">
         <div className="flex items-center space-x-2">
           <Activity className="h-8 w-8 text-typography-primary" />
-          <span className="text-xl font-semibold text-typography-primary">KneeRehab</span>
+          <span className="text-xl font-semibold text-typography-primary">Knee Rehab</span>
         </div>
       </div>
       

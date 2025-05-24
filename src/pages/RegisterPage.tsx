@@ -38,7 +38,7 @@ const RegisterPage = () => {
           <div className="w-24 h-24 rounded-full bg-functional-blue-dark flex items-center justify-center mx-auto mb-4">
             <Activity className="w-12 h-12 text-functional-blue-light" />
           </div>
-          <h1 className="text-5xl font-bold text-typography-primary mb-2">KneeRehab</h1>
+          <h1 className="text-5xl font-bold text-typography-primary mb-2">Knee Rehab</h1>
           <p className="text-2xl text-typography-secondary">
             Recupera tu rodilla con nuestro programa digital
           </p>

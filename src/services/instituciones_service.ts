@@ -8,7 +8,7 @@ const baseURLSedes = `${baseURLInstituciones}/sede`;
 
 // Centro de Rehabilitación
 export const getInstituciones = async () => {
-  const response = await api.get(baseURLInstituciones);
+  const response = await api.get(baseURLCentros);
   return response.data;
 };
 

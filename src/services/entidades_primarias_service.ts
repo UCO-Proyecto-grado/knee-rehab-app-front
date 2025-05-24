@@ -2,10 +2,10 @@ import { Pais, Departamento, Ciudad, TipoDocumento, Estado } from "../models/ent
 import api from "../utils/api";
 
 
-const baseURLEntidadesPrimarias = `/entidades-primarias`
+const baseURLEntidadesPrimarias = `/entidades`
 const baseURLPaises = `${baseURLEntidadesPrimarias}/paises`
 const baseURLDepartamentos = `${baseURLEntidadesPrimarias}/departamentos`
-const baseURLTiposDocumento = `${baseURLEntidadesPrimarias}/tipos-dni`
+const baseURLTiposDocumento = `${baseURLEntidadesPrimarias}/tipos-identificacion`
 const baseURLCiudades = `${baseURLEntidadesPrimarias}/ciudades`
 const baseURLEstados = `${baseURLEntidadesPrimarias}/estados`
 
