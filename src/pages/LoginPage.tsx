@@ -24,14 +24,13 @@ const LoginPage = () => {
         
         if (!response.ok) throw new Error('Token exchange failed');      
         const data = await response.json();
-        localStorage.setItem('access_token', data.access_token);
-        localStorage.setItem('id_token', data.id_token);
+        localStorage.setItem('access_token', data.data.access_token);
+        localStorage.setItem('id_token', data.data.id_token);
         localStorage.setItem('UserInfo', JSON.stringify(data.data.usuario_administrador));
 
         window.history.replaceState({}, document.title, window.location.pathname);
-
         const rol = data.data.usuario_administrador.roles[0];
-        console.log(rol)
+        
         switch (rol) {
           case 'AdministradorCentro':
             navigate('/centro/dashboard');
