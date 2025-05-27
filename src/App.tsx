@@ -8,6 +8,7 @@ import ProfilePage from './pages/ProfilePage';
 import ProgressPage from './pages/ProgressPage';
 import CenterDashboardPage from './pages/CenterDashboardPage';
 import RegisterPage from './pages/RegisterPage';
+import LoginPage from './pages/LoginPage';
 import HomePage from './Page/HomePage';
 
 function App() {
@@ -17,7 +18,7 @@ function App() {
       <div className="min-h-screen bg-background text-typography-secondary font-sans">
         <Routes>
           <Route path="/" element={<HomePage />} />
-          {/* <Route path="/" element={<LoginPage />} /> Remove or comment out the old root path */}
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/registro" element={<RegisterPage />} />
           <Route path="/registro-centro" element={<RegisterCenterPage />} />
           <Route
