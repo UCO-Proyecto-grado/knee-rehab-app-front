@@ -27,7 +27,7 @@ const ProfilePage = () => {
             
             <div className="flex flex-col items-center md:items-start">
               <h2 className="text-2xl font-bold text-typography-primary mb-1">
-                {user?.name || 'Usuario'}
+                {(user?.nombre && user?.apellido) ? `${user.nombre} ${user.apellido}` : 'Usuario'}
               </h2>
               <p className="text-neutral-secondary mb-4">
                 {user?.email || 'usuario@example.com'}
@@ -74,7 +74,7 @@ const ProfilePage = () => {
                   <div className="flex flex-col md:flex-row gap-4">
                     <Input
                       label="Nombre completo"
-                      value={user?.name || ''}
+                      value={(user?.nombre && user?.apellido) ? `${user.nombre} ${user.apellido}` : ''}
                       icon={<User size={16} />}
                       className="flex-1"
                     />
@@ -91,13 +91,98 @@ const ProfilePage = () => {
                     <Input
                       label="Teléfono"
                       type="tel"
-                      placeholder="+34 XXX XXX XXX"
+                      value={user?.telefono || ''}
+                      placeholder="+1234567890"
                       icon={<Phone size={16} />}
                       className="flex-1"
                     />
-                    <div className="flex-1"></div>
+                    <Input
+                      label="Fecha de Nacimiento"
+                      value={user?.fecha_nacimiento || ''}
+                      readOnly
+                      icon={<User size={16} />}
+                      className="flex-1"
+                    />
+                  </div>
+
+                  <div className="flex flex-col md:flex-row gap-4">
+                    <Input
+                      label={`Tipo de Identificación (${user?.tipo_identificacion?.codigo || 'N/A'})`}
+                      value={user?.tipo_identificacion?.nombre || ''}
+                      readOnly
+                      icon={<User size={16} />}
+                      className="flex-1"
+                    />
+                    <Input
+                      label="Número de Identificación"
+                      value={user?.identificacion || ''}
+                      readOnly
+                      icon={<User size={16} />}
+                      className="flex-1"
+                    />
+                  </div>
+
+                  <div className="flex flex-col md:flex-row gap-4">
+                    <Input
+                      label="Género"
+                      value={user?.genero || ''}
+                      readOnly
+                      icon={<User size={16} />}
+                      className="flex-1"
+                    />
+                     <Input
+                      label="Estado del Paciente"
+                      value={user?.estado?.nombre || ''}
+                      readOnly
+                      icon={<User size={16} />}
+                      className="flex-1"
+                    />
+                  </div>
+
+                  <Input
+                    label="Dirección"
+                    value={user?.direccion || ''}
+                    readOnly
+                    icon={<User size={16} />}
+                  />
+
+                  <div className="flex flex-col md:flex-row gap-4">
+                    <Input
+                      label="Ciudad"
+                      value={user?.ciudad?.nombre || ''}
+                      readOnly
+                      icon={<User size={16} />}
+                      className="flex-1"
+                    />
+                    <Input
+                      label="Departamento"
+                      value={user?.ciudad?.departamento?.nombre || ''}
+                      readOnly
+                      icon={<User size={16} />}
+                      className="flex-1"
+                    />
                   </div>
                   
+                  <Input
+                    label="País"
+                    value={user?.ciudad?.departamento?.pais?.nombre || ''}
+                    readOnly
+                    icon={<User size={16} />}
+                  />
+
+                  {user?.sede && (
+                    <div className="pt-4 mt-6 border-t border-background">
+                      <h4 className="text-md font-semibold text-typography-primary mb-3">Información de la Sede</h4>
+                      <div className="space-y-3">
+                        <Input label="Nombre Sede" value={user.sede.centro_rehabilitacion?.nombre || 'N/A'} readOnly className="flex-1" />
+                        <Input label="Código Sede" value={user.sede.codigo_sede || 'N/A'} readOnly className="flex-1" />
+                        <Input label="Dirección Sede" value={user.sede.direccion || 'N/A'} readOnly className="flex-1" />
+                        <Input label="Teléfono Sede" value={user.sede.telefono || 'N/A'} readOnly className="flex-1" />
+                        <Input label="Ciudad Sede" value={user.sede.ciudad?.nombre || 'N/A'} readOnly className="flex-1" />
+                      </div>
+                    </div>
+                  )}
+
                   <div className="pt-4">
                     <Button type="submit">Guardar cambios</Button>
                   </div>

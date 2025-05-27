@@ -1,12 +1,17 @@
 import { Fisioterapeuta, Paciente } from "../models/accesos_personal_model.interface";
 import api from "../utils/api";
 
-const baseURLAccesosPersonales = `/acceso-personal`;
-const baseUrlPacientes = `${baseURLAccesosPersonales}/pacientes`;
+const baseURLAccesosPersonales = `/personas`;
+const baseUrlPacientes = `${baseURLAccesosPersonales}/paciente`;
 const baseUrlFisioterapeutas = `${baseURLAccesosPersonales}/fisioterapeutas`;
 
 export const getPacientes = async () => {
   const response = await api.get(baseUrlPacientes);
+  return response.data;
+};
+
+export const getPacienteById = async (id: string) => {
+  const response = await api.get(`${baseUrlPacientes}/${id}`);
   return response.data;
 };
 

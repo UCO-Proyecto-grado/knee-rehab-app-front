@@ -4,11 +4,16 @@ const baseURLInstituciones = `/instituciones`;
 const baseURLCentros = `${baseURLInstituciones}/centro-rehabilitacion`;
 const baseURLTiposSede = `${baseURLInstituciones}/tipo-sede`;
 const baseURLSedes = `${baseURLInstituciones}/sede`;
-
+const baseURLFisioterapeutaSede = `${baseURLInstituciones}/fisioterapeuta-sede`;
 
 // Centro de Rehabilitación
 export const getInstituciones = async () => {
   const response = await api.get(baseURLCentros);
+  return response.data;
+};
+
+export const getInstitucionesById = async (id: string) => {
+  const response = await api.get(`${baseURLCentros}/${id}`);
   return response.data;
 };
 
@@ -69,7 +74,10 @@ export const deleteSede = async (id: string) => {
   return response.data;
 };
 
-
+export const postFisioterapeutaSede = async (id_fisioterapeuta: string, id_sede: string) => {
+  const response = await api.post(`${baseURLFisioterapeutaSede}/${id_fisioterapeuta}/${id_sede}`);
+  return response.data;
+};
 
 
 

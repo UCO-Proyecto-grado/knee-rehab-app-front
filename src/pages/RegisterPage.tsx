@@ -24,7 +24,7 @@ const RegisterPage = () => {
     }
     
     try {
-      await register(email, password, name);
+      await register(email, password, name, name);
       navigate('/dashboard');
     } catch (err) {
       setError('Error al crear cuenta. Por favor, intenta de nuevo.');

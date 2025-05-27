@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Dumbbell, Calendar, Clock, BarChart2, Award, ChevronRight, Check } from 'lucide-react';
 import Layout from '../components/Layout';
 import { useAuth } from '../context/AuthContext';
@@ -6,7 +7,10 @@ import Button from '../components/Button';
 
 const DashboardPage = () => {
   const { user } = useAuth();
-  const [currentDay, _setCurrentDay] = useState(3); // Example: day 3 of program
+  const [currentDay, _setCurrentDay] = useState(3);
+  const location = useLocation();
+
+  console.log(location)
 
   const todaysExercises = [
     {
@@ -63,7 +67,7 @@ const DashboardPage = () => {
             {/* Welcome message */}
             <div className="bg-background-dark p-6 rounded-xl shadow-md">
               <h2 className="text-2xl font-bold text-typography-primary mb-1">
-                Bienvenido, {user?.name || 'Usuario'}
+                Bienvenido, {user?.nombre || 'Usuario'}
               </h2>
               <p className="text-neutral-secondary mb-4">
                 Día {currentDay} de tu programa de rehabilitación
