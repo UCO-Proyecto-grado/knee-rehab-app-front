@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { X, UserPlus } from 'lucide-react';
 import Button from './Button';
 import { postCreatePaciente } from '../services/accesos_personal_service';
@@ -240,7 +240,7 @@ const CreatePacienteModal: React.FC<CreatePacienteModalProps> = ({ isOpen, onClo
             <Button type="button" variant="outline" onClick={onClose} disabled={isSubmitting}>
               Cancelar
             </Button>
-            <Button type="submit" variant="primary" disabled={isSubmitting} isLoading={isSubmitting}>
+            <Button type="submit" variant="primary" disabled={isSubmitting}>
               {isSubmitting ? 'Creando Paciente...' : 'Crear Paciente'}
             </Button>
           </div>
