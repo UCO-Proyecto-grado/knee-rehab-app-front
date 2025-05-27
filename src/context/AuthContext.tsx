@@ -108,72 +108,83 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     const attemptAutoLoginAndFallback = async () => {
       setIsLoading(true);
-      let userFound = false;
-      const pacienteIdFromSession = sessionStorage.getItem('pacienteId');
+      let userDataSet = false;
 
-      if (pacienteIdFromSession) {
+      // Priority 1: Try to load user from sessionStorage.getItem('UserInfo')
+      const userInfoString = sessionStorage.getItem('UserInfo');
+      if (userInfoString) {
         try {
-          console.log(`Attempting to fetch user with ID from session: ${pacienteIdFromSession}`);
-          const response = await getPacienteById(pacienteIdFromSession);
-          if (response && response.data) {
-            setUser(response.data);
-            localStorage.setItem('user', JSON.stringify(response.data));
-            sessionStorage.setItem('pacienteId', response.data.id); 
-            userFound = true;
-            console.log('User data loaded from API via session ID', response.data);
+          const parsedUserInfo = JSON.parse(userInfoString);
+          if (parsedUserInfo && parsedUserInfo.usuario && parsedUserInfo.usuario.id) {
+            const pacienteData: Paciente = parsedUserInfo.usuario;
+            setUser(pacienteData);
+            localStorage.setItem('user', JSON.stringify(pacienteData)); // Sync to localStorage
+            sessionStorage.setItem('pacienteId', pacienteData.id); // Sync pacienteId for compatibility
+            userDataSet = true;
+            console.log('User loaded from UserInfo in sessionStorage', pacienteData);
           } else {
-            console.warn('Invalid API response structure when fetching by session ID');
-            // Potentially clear session storage if response is bad
-            // sessionStorage.removeItem('pacienteId'); 
+            console.warn('UserInfo in sessionStorage is invalid or missing .usuario field. Clearing it.');
+            sessionStorage.removeItem('UserInfo');
           }
         } catch (error) {
-          console.error('Failed to fetch user by ID from session storage:', error);
-          // Clear potentially problematic session/local storage items
-          localStorage.removeItem('user');
-          sessionStorage.removeItem('pacienteId');
+          console.error('Failed to parse UserInfo from sessionStorage. Clearing it.', error);
+          sessionStorage.removeItem('UserInfo');
         }
       }
 
-      if (!userFound) {
-        const storedUser = localStorage.getItem('user');
+      // Priority 2: Fallback to localStorage.getItem('user') if UserInfo was not successful
+      if (!userDataSet) {
+        const storedUser = localStorage.getItem('user'); // This is expected to be a Paciente object string
         if (storedUser) {
           try {
             const parsedUser = JSON.parse(storedUser) as Paciente;
             setUser(parsedUser);
-            sessionStorage.setItem('pacienteId', parsedUser.id);
-            userFound = true;
-            console.log('User data loaded from localStorage (no session ID or session fetch failed)', parsedUser);
+            sessionStorage.setItem('pacienteId', parsedUser.id); // Ensure pacienteId in session is also set
+            userDataSet = true;
+            console.log('User loaded from localStorage', parsedUser);
           } catch (e) {
-            console.error("Failed to parse user from localStorage", e);
+            console.error("Failed to parse user from localStorage. Clearing it.", e);
             localStorage.removeItem('user');
-            sessionStorage.removeItem('pacienteId'); // Clear session if local user is corrupt
+            sessionStorage.removeItem('pacienteId'); // Clear associated session item
           }
         }
       }
-
-      if (!userFound) {
-        console.log("No user found in session or local storage. Attempting default login for development.");
-        const hardcodedPacienteIdForDev = 'fa4504f5-3601-4461-bcdd-edd760d3e5cd';
+      
+      // Priority 3: Fallback to hardcoded Paciente ID for development (if still no user)
+      // This uses the ID from your example UserInfo: "00afde86-1027-4309-aaaf-ed16955c8993"
+      if (!userDataSet) {
+        const hardcodedPacienteIdForDev = '00afde86-1027-4309-aaaf-ed16955c8993';
+        console.log(`Attempting to load user with hardcoded ID: ${hardcodedPacienteIdForDev}`);
         try {
             const response = await getPacienteById(hardcodedPacienteIdForDev);
             if (response && response.data) {
                 setUser(response.data);
                 localStorage.setItem('user', JSON.stringify(response.data));
                 sessionStorage.setItem('pacienteId', response.data.id);
-                console.log('Default login successful, user data fetched:', response.data);
+                // Optionally, you could even populate sessionStorage 'UserInfo' here for consistency in dev
+                // const devUserInfo = { usuario: response.data, email: response.data.email, id_cognito: 'dev-cognito-id', roles: ['Paciente'] };
+                // sessionStorage.setItem('UserInfo', JSON.stringify(devUserInfo));
+                userDataSet = true; // Mark that user data is now set
+                console.log('User loaded using hardcoded dev ID', response.data);
             } else {
-                console.error('Default login fetch succeeded but API response structure was invalid or missing data.');
-                // User remains null, storages should ideally be clear or reflect this failed state
+                console.error('Hardcoded ID fetch succeeded but API response structure was invalid or missing data.');
                 localStorage.removeItem('user');
                 sessionStorage.removeItem('pacienteId');
+                sessionStorage.removeItem('UserInfo'); // Clear all if this critical fallback fails
             }
         } catch (error) {
-            console.error('Error during default login attempt (dev fallback):', error);
-            setUser(null);
+            console.error('Error during hardcoded default login (getPacienteById): ', error);
+            setUser(null); // Ensure user is null on failure
             localStorage.removeItem('user');
             sessionStorage.removeItem('pacienteId');
+            sessionStorage.removeItem('UserInfo');
         }
       }
+
+      if (!userDataSet) {
+        console.log('No user data could be loaded after all attempts.');
+      }
+
       setIsLoading(false);
     };
 
@@ -182,15 +193,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const login = async (_email: string, _password: string) => { 
     setIsLoading(true);
-    const hardcodedPacienteId = 'fa4504f5-3601-4461-bcdd-edd760d3e5cd'; 
+    // TODO: This login function should be updated to fetch the full UserInfo object upon successful authentication,
+    // then store it in sessionStorage.setItem('UserInfo', JSON.stringify(apiResponse)).
+    // Finally, call setUser(apiResponse.usuario).
+    // For now, it uses a hardcoded ID and getPacienteById, which might not align with the new UserInfo flow.
+    const hardcodedPacienteId = 'fa4504f5-3601-4461-bcdd-edd760d3e5cd'; // Example ID, may not match your test data
+    console.warn("Login function is using a hardcoded ID and may not reflect the new UserInfo flow. Needs update for production.");
     try {
-      console.log(`Attempting login by fetching Paciente ID: ${hardcodedPacienteId}`);
       const response = await getPacienteById(hardcodedPacienteId);
       if (response && response.data) {
-        setUser(response.data);
-        localStorage.setItem('user', JSON.stringify(response.data));
-        sessionStorage.setItem('pacienteId', response.data.id); 
-        console.log('Login successful, user data fetched:', response.data);
+        const pacienteData = response.data;
+        setUser(pacienteData);
+        localStorage.setItem('user', JSON.stringify(pacienteData));
+        sessionStorage.setItem('pacienteId', pacienteData.id);
+        // To align with the new flow, this should ideally set 'UserInfo' in sessionStorage as well.
+        // Example: const mockUserInfo = { usuario: pacienteData, email: pacienteData.email, id_cognito: 'mock-cognito-id', roles: ['some_role'] };
+        // sessionStorage.setItem('UserInfo', JSON.stringify(mockUserInfo));
       } else {
         throw new Error('Login fetch succeeded but API response structure was invalid or missing data.');
       }
@@ -199,7 +217,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setUser(null);
       localStorage.removeItem('user');
       sessionStorage.removeItem('pacienteId');
-      // throw error; // Decide if login function itself should throw or just handle internally
+      sessionStorage.removeItem('UserInfo'); // Clear UserInfo on login failure too
     } finally {
       setIsLoading(false);
     }
@@ -207,6 +225,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const register = async (email: string, _password: string, nombre: string, apellido: string) => {
     setIsLoading(true);
+    // TODO: This function should also align with the UserInfo structure after successful registration.
+    // The backend should return the full UserInfo, which is then stored.
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000)); 
       const userData: Paciente = {
@@ -227,13 +247,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       };
       setUser(userData);
       localStorage.setItem('user', JSON.stringify(userData));
-      sessionStorage.setItem('pacienteId', userData.id); 
-      console.log('Registration successful (mock):', userData);
+      sessionStorage.setItem('pacienteId', userData.id);
+      // To align, also set a mock UserInfo object in sessionStorage
+      // const mockUserInfo = { usuario: userData, email: userData.email, id_cognito: 'new-cognito-id', roles: ['some_role'] };
+      // sessionStorage.setItem('UserInfo', JSON.stringify(mockUserInfo));
+      console.warn("Register function created mock Paciente data. Needs update to handle UserInfo structure from backend.");
     } catch (error) {
       console.error('Error during registration:', error);
       setUser(null); 
       localStorage.removeItem('user');
       sessionStorage.removeItem('pacienteId'); 
+      sessionStorage.removeItem('UserInfo');
       throw error;
     } finally {
       setIsLoading(false);
@@ -244,7 +268,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setUser(null);
     localStorage.removeItem('user');
     sessionStorage.removeItem('pacienteId'); 
-    console.log('User logged out, session and local storage cleared.');
+    sessionStorage.removeItem('UserInfo'); // Ensure UserInfo is cleared on logout
+    console.log('User logged out, all auth storage cleared.');
   };
 
   return (

@@ -34,8 +34,8 @@ const Sidebar = () => {
     },
     { 
       icon: <FileText size={20} />, 
-      label: 'Recursos', 
-      path: '/recursos' 
+      label: 'Plan de rehabilitación', 
+      path: '/planes-rehabilitacion' 
     },
     { 
       icon: <User size={20} />, 

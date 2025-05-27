@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Dumbbell, Calendar, Clock, BarChart2, Award, ChevronRight, Check } from 'lucide-react';
 import Layout from '../components/Layout';
 import { useAuth } from '../context/AuthContext';
@@ -8,9 +8,7 @@ import Button from '../components/Button';
 const DashboardPage = () => {
   const { user } = useAuth();
   const [currentDay, _setCurrentDay] = useState(3);
-  const location = useLocation();
-
-  console.log(location)
+  const navigate = useNavigate();
 
   const todaysExercises = [
     {
@@ -132,6 +130,7 @@ const DashboardPage = () => {
                           variant="secondary"
                           size="sm"
                           className="py-1 px-3 text-sm"
+                          onClick={() => navigate(`/exercise/${exercise.id}`)}
                         >
                           Iniciar
                         </Button>
@@ -220,7 +219,7 @@ const DashboardPage = () => {
               <div className="flex items-center mb-4">
                 <Calendar className="text-functional-blue-light mr-2" size={22} />
                 <h2 className="text-xl font-semibold text-typography-primary">
-                  Próximas citas
+                  Proxima conexión con tu fisioterapeuta
                 </h2>
               </div>
               
@@ -258,7 +257,7 @@ const DashboardPage = () => {
                   fullWidth
                   className="flex items-center justify-center"
                 >
-                  <span>Programar cita</span>
+                  <span>Información de tu fisioterapeuta</span>
                   <ChevronRight size={16} className="ml-1" />
                 </Button>
               </div>

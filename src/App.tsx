@@ -10,6 +10,9 @@ import CenterDashboardPage from './pages/CenterDashboardPage';
 import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
 import HomePage from './Page/HomePage';
+import ExerciseVideoPage from './pages/ExerciseVideoPage';
+import RehabilitationPlansPage from './pages/RehabilitationPlansPage';
+import PlanExercisesPage from './pages/PlanExercisesPage';
 
 function App() {
 
@@ -58,6 +61,30 @@ function App() {
             element={
               <ProtectedRoute>
                 <ProfilePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/exercise/:id"
+            element={
+              <ProtectedRoute>
+                <ExerciseVideoPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/planes-rehabilitacion"
+            element={
+              <ProtectedRoute>
+                <RehabilitationPlansPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/planes-rehabilitacion/:planId/ejercicios"
+            element={
+              <ProtectedRoute>
+                <PlanExercisesPage />
               </ProtectedRoute>
             }
           />
